@@ -5,7 +5,7 @@ def clean_dict_value(d, bad_val):
             del d[i]
         else:
             cleaned_dictionary[i] = d[i]
-    print(cleaned_dictionary)
+    return cleaned_dictionary
 
 
-clean_dict_value({'a': 7, 'b': 6, 'c': 9}, 7)
+print(clean_dict_value({'a': 7, 'b': 6, 'c': 9}, 7))
