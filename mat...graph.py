@@ -11,7 +11,7 @@ import numpy as np
 
 
 def f(x):
-    return (x+5)**2
+    return (x+5)**3
 
 
 xlist = np.linspace(-10, 10)
