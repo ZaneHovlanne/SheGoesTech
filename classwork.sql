@@ -1,0 +1,5 @@
+--SELECT * FROM north_american_cities where country ="Canada" order by population;
+--select * from north_american_cities where country = "United States" order by Latitude DESC;
+--SELECT * FROM north_american_cities where Longitude < -87.629798 order by Longitude ASC;
+--SELECT * FROM north_american_cities where country = "Mexico" order by population DESC limit 2;
+--SELECT city, population FROM north_american_cities where country = "United States" order by population DESC limit 2 offset 2;
