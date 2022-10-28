@@ -13,6 +13,7 @@ fps = 60
 antique_white = (255, 239, 219)
 forest_green = (0, 100, 0)
 black = (0, 0, 0)
+blue = (0, 0, 255)
 rows = 6
 columns = 6
 correct = [[0, 0, 0, 0, 0, 0],
@@ -33,10 +34,13 @@ first_guess_number = 0
 second_guess_number = 0
 score = 0
 matches = 0
+best_score = 0
+# game_over = False
 
 # need to find the folder and drop it in
 title_font = pygame.font.Font('freesansbold.ttf', 51)
 regular_font = pygame.font.Font('freesansbold.ttf', 25)
+tiny_font = pygame.font.Font('freesansbold.ttf', 12)
 
 # create screen
 new_board = True
@@ -63,35 +67,50 @@ def make_board():
 
 
 def make_backgrounds():
+    global current_turns
+    global previous_best_score
     top_menu = pygame.draw.rect(screen, black, [0, 0, 1000, 70])
     title = title_font.render("The Memory Game", True, antique_white)  # define
     screen.blit(title, (260, 20))  # draw on screen
     board_space = pygame.draw.rect(screen, antique_white, [250, 100, 500, 500])
     bottom_menu = pygame.draw.rect(screen, black, [0, 580, 1000, 20])
+    restart_text = regular_font.render(
+        'Restart', True, antique_white)
+    screen.blit(restart_text, (850, 540))
+    # restart_button = pygame.draw.rect(
+    #     screen, antique_white, [10, 850, 540, 100])
+    score_text = regular_font.render(
+        f'Current turns: {score}', True, antique_white)
+    screen.blit(score_text, (770, 200))
+    best_text = regular_font.render(
+        f'Previous best: {best_score}', True, antique_white)
+    screen.blit(best_text, (770, 400))
+    # return restart_button
 
 
 def board_specifications():
     global rows
     global columns
     pieces_tracked = []
+    board_list = []
     for i in range(columns):
         for j in range(rows):
             piece = pygame.draw.rect(
                 screen, black, [i * 80 + 270, j * 80 + 108, 60, 60], 0, 4)
             pieces_tracked.append(piece)
             # gonna have to take out, as I will have images(next 3 lines)
-            piece_text = regular_font.render(
-                f"{spaces[i * rows +j]}", True, forest_green)
-            screen.blit(piece_text, (i * 80 + 280, j * 80 + 140))
+            # piece_text = regular_font.render(
+            #     f"{spaces[i * rows +j]}", True, antique_white)
+            # screen.blit(piece_text, (i * 80 + 292, j * 80 + 125))
 
     for r in range(rows):
-        for c in range(columns):  # DOES NOT WORK - need to get in irght positions
+        for c in range(columns):
             if correct[r][c] == 1:
-                pygame.draw.rect(screen, forest_green, [
-                    c * 80 + 280, r * 80 + 140, 54, 54], 3, 4)
+                pygame.draw.rect(screen, blue, [
+                    c * 80 + 270, r * 80 + 105, 63, 63], 3, 4)
                 piece_text = regular_font.render(
-                    f"{spaces[c * rows +r]}", True, black)
-                screen.blit(piece_text, (c * 80 + 280, r * 80 + 140))
+                    f"{spaces[c * rows +r]}", True, blue)
+                screen.blit(piece_text, (c * 80 + 292, r * 80 + 125))
 
     return pieces_tracked
 
@@ -124,11 +143,13 @@ while running:
         print(spaces)
         new_board = False
 
+    # restart = make_backgrounds
     make_backgrounds()
     board = board_specifications()
 
     if first_guess and second_guess:
         check_guesses(first_guess_number, second_guess_number)
+        pygame.time.delay(1000)
         first_guess = False
         second_guess = False
 
@@ -146,6 +167,39 @@ while running:
                     second_guess = True
                     second_guess_number = i
                     print(i)
+            # if restart.collidepoint(event.pos):
+            #     options_list = []
+            #     used = []
+            #     spaces = []
+            #     new_board = []
+            # score = 0
+            # matches = 0
+            # first_guess = False
+            # second_guess = False
+
+            # correct = [[0, 0, 0, 0, 0, 0],
+            #            [0, 0, 0, 0, 0, 0],
+            #            [0, 0, 0, 0, 0, 0],
+            #            [0, 0, 0, 0, 0, 0],
+            #            [0, 0, 0, 0, 0, 0],
+            #            [0, 0, 0, 0, 0, 0]]
+            # game_over = False  ALLL OF THIS SHOULD GO INTO FUNCTION
+
+# if matches == 18:
+#     game_over = Truewinner = pygame.draw.rect(
+#         screen, blue, [10, 300, 800, 80], 0, 5)
+#     winner_text = title_font(f"You won in {score} moves!", True, black)
+
+# screen.blit(winner_text, (10, 320))
+# if best_score > score or best_score == 0:
+#     best_score = score
+
+# if first_guess:
+#     piece_text = regular_font.render(
+#         f'{spaces[first_guess_number]}', True, blue)
+#     location = (first_guess_number // rows * 75 + 270,
+#                 (first_guess_number - (first_guess_number//rows * rows)) * 65 + 120)
+#     screen.blit(piece_text, (location))
 
     pygame.display.flip()
 
